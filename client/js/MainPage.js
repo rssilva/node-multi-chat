@@ -13,9 +13,19 @@ window.onload = function () {
         },
         removeUserFromLobby: function ( index ) {
             mainPage.removeUserFromLobby( index )
+        },
+        onChatMessage: function ( data ) {
+            mainPage.onChatMessage( data )
         }
     });
     user.init();
+
+    mainPage.lobbyChat.addUser({
+        sendMessage: function ( data ) {
+            data.index = user.getIndex();
+            user.sendData( data )
+        }
+    })
 }
 
 var MainPage = function () {
@@ -33,7 +43,7 @@ var MainPage = function () {
             for ( var i = 0, len = usersList.length; i < len; i++ ) {
                 
                 if ( usersList[i] ) {
-                    this.lobbyChat.addUser( i );
+                    // this.lobbyChat.addUser( i );
 
                     li = this.buildUserElement( usersList[i].userData );
                     li.className = 'index-' + i;
@@ -58,8 +68,6 @@ var MainPage = function () {
                 data: data.newUser,
                 elem: li
             });
-
-            this.lobbyChat.addUser( data.index )
 
             this.lobbyDash.find('ul.main-user-list').append( li );
         },
@@ -91,19 +99,22 @@ var MainPage = function () {
             }
         },
 
+        onChatMessage: function ( data ) {
+            
+        },
+
         addLobbyChat: function () {
             var self = this;
 
             this.lobbyChat = new Chat({
-                onMessage: function ( index ) {
-                    self.stream( index );
-                }
+                id: 'lobbychat'
             });
 
             this.lobbyChat.init();
         },
 
         stream: function ( index ) {
+            //isn't used?
             console.log('index', index)
         }
     }

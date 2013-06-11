@@ -2,7 +2,7 @@ var User = function ( data ) {
 	return {
 		init: function () {
 			this.data = data;
-
+			
 			this.setConnectionEvents()
 		},
 
@@ -26,7 +26,6 @@ var User = function ( data ) {
 		},
 
 		onMessage: function ( message ) {
-			// console.log(message)
 			if ( message.type === 'utf8' && message.utf8Data ) {
 				
 				var messageContent = JSON.parse( message.utf8Data )
@@ -36,7 +35,7 @@ var User = function ( data ) {
 					this.firstMessage( messageContent )
 				} else if ( messageContent.messageType == 'stream' ) {
 
-					this.stream( index, message );
+					this.streamMessage( messageContent );
 				}
 			}
 		},
@@ -68,7 +67,7 @@ var User = function ( data ) {
 
 		setConnectionEvents: function () {
 			var self = this;
-			
+
 			this.data.connection.on( 'message', function ( message ) {
 				self.onMessage( message )
 			});

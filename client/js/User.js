@@ -58,7 +58,16 @@ var User = function ( options ) {
 			}
 		},
 
+
 		handleMessage: function ( message ) {
+			if ( message.messageType ) {
+				if ( message.messageType == 'setUserData' ) {
+					this.index = message.index;
+				} else if ( message.messageType == 'stream' ) {
+					this.options.onChatMessage( message )
+				}
+			}
+
 			if ( message.lobbyUsersList ) {
 				this.options.populateLobbyDash( message.lobbyUsersList )
 			} else if ( message.newUser ) {
@@ -67,5 +76,9 @@ var User = function ( options ) {
 				this.options.removeUserFromLobby( message.index )
 			}
 		},
+
+		getIndex: function () {
+			return this.index;
+		}
 	}
 }
